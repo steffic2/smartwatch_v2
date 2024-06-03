@@ -1,0 +1,2 @@
+void camsetup();
+void camloop();
