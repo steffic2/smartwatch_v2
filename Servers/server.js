@@ -6,10 +6,14 @@ const server = new WebSocket.Server({ port: 8080 });
 
 server.on('connection', socket => {
     console.log('A new client connected!');
-    
+
+
+    socket.send('welcome to server');   //new line
+
     socket.on('message', message => {
         console.log('Message type:', typeof message);
-        
+
+
         if (typeof message === 'object') {
             try {
                 const data = JSON.parse(message);

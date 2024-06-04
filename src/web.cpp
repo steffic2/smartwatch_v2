@@ -55,8 +55,15 @@ void websetup()
     // websockets_client.begin("192.168.107.28", 8080); // replace with your server's info
     websockets_client.begin("192.168.57.198", 8080, "/"); // replace with your server's info
     // websockets_client.begin("34.218.247.252", 8888, "/websocket_esp32"); // replace with your server's info
+    delay(1000);
+    Serial.println("after .begin + before .sendtxt");
     websockets_client.sendTXT("CAN THIS PLS WORK");
+    delay(1000);
+    Serial.println("after sendtxt + before .onevent");
     websockets_client.onEvent(websockets_event);
+    Serial.println("after .onevent + before .loop");
+    // websockets_client.loop();
+
 }
 
 
@@ -93,12 +100,13 @@ void webloop()
     // Sending the image
     sendImage("/image.jpg");
     Serial.print("5");
-    websockets_client.loop();
+    //websockets_client.loop();
     delay(1000);
 }
 
 void websockets_event(WStype_t type, uint8_t *payload, size_t length)
 {
+    Serial.println("is this in websockets_event");
     switch (type)
     {
     case WStype_DISCONNECTED:
@@ -107,6 +115,7 @@ void websockets_event(WStype_t type, uint8_t *payload, size_t length)
         break;
     case WStype_CONNECTED:
         Serial.println("Connected to WebSocket server");
+        websockets_client.sendTXT("Hello from esp32");
         break;
     case WStype_TEXT:
         Serial.println("Received message from WebSocket server: " + String((char *)payload));
